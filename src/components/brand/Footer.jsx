@@ -1,4 +1,4 @@
-import { cn } from '../../lib/cn'
+import { cn } from '@/lib/utils'
 
 /**
  * Footer — DESIGN.md: footer
@@ -7,7 +7,7 @@ export function Footer({ className, children, ...props }) {
   return (
     <footer
       className={cn(
-        'bg-canvas-soft p-xxl text-ink-secondary text-caption',
+        'border-t border-border bg-canvas-soft p-xxl text-caption text-ink-secondary',
         className,
       )}
       {...props}

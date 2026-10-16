@@ -1,7 +1,0 @@
-export { Badge } from './Badge'
-export { Button } from './Button'
-export { Card } from './Card'
-export { Footer } from './Footer'
-export { HeroBand } from './HeroBand'
-export { Input } from './Input'
-export { NavBar } from './NavBar'
