@@ -1,53 +1,134 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import {
+  Badge,
+  Button,
+  Card,
+  Footer,
+  HeroBand,
+  Input,
+  NavBar,
+} from './components/ui'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [name, setName] = useState('')
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-8 p-8">
-      <div className="flex items-center gap-6">
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img
-            src={viteLogo}
-            className="h-20 w-20 transition hover:drop-shadow-[0_0_1.5em_#646cffaa]"
-            alt="Vite logo"
-          />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img
-            src={reactLogo}
-            className="h-20 w-20 transition hover:drop-shadow-[0_0_1.5em_#61dafbaa]"
-            alt="React logo"
-          />
-        </a>
-      </div>
+    <div className="flex min-h-dvh flex-col bg-canvas-soft">
+      <NavBar className="border-b border-hairline">
+        <span className="text-title font-semibold text-ink">Design System</span>
+        <nav className="ml-auto flex items-center gap-md">
+          <a href="#components" className="text-ink no-underline hover:text-primary">
+            Components
+          </a>
+          <Button variant="utility">Get started</Button>
+        </nav>
+      </NavBar>
 
-      <h1 className="text-4xl font-bold text-slate-900 tracking-tight">
-        Vite + React + Tailwind
-      </h1>
-
-      <div className="flex flex-col items-center gap-4 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-        <button
-          type="button"
-          className="rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-slate-700"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-        <p className="text-slate-600">
-          Edit{' '}
-          <code className="rounded bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800">
-            src/App.jsx
-          </code>{' '}
-          and save to test HMR
+      <HeroBand className="flex flex-col gap-lg">
+        <Badge className="self-start bg-white/10 text-on-primary">
+          Notion Analysis tokens
+        </Badge>
+        <h1 className="max-w-3xl text-display-1 text-on-primary max-md:text-[40px]">
+          Meet the design system
+        </h1>
+        <p className="max-w-xl text-body-md font-normal text-white/80">
+          Warm canvas, Inter type, and a single structural blue — wired from
+          DESIGN.md into Tailwind tokens and React primitives.
         </p>
-      </div>
+        <div className="flex flex-wrap gap-sm">
+          <Button variant="primary">Primary CTA</Button>
+          <Button variant="secondary">Secondary</Button>
+        </div>
+      </HeroBand>
 
-      <p className="text-sm text-slate-500">
-        Tailwind CSS is configured and ready to use.
-      </p>
+      <main
+        id="components"
+        className="mx-auto flex w-full max-w-[1080px] flex-1 flex-col gap-xl px-md py-xxl"
+      >
+        <div className="flex flex-col gap-xs">
+          <h2 className="text-heading-2 text-ink">Primitives</h2>
+          <p className="text-body-md text-ink-muted">
+            Smoke screen for tokens and UI components.
+          </p>
+        </div>
+
+        <div className="grid gap-lg md:grid-cols-2">
+          <Card>
+            <div className="mb-md flex items-center justify-between gap-sm">
+              <h3 className="text-heading-3">Buttons</h3>
+              <Badge>chrome</Badge>
+            </div>
+            <p className="mb-lg text-body-sm text-ink-muted">
+              Primary, secondary, utility, and icon variants.
+            </p>
+            <div className="flex flex-wrap items-center gap-sm">
+              <Button
+                variant="primary"
+                onClick={() => setCount((c) => c + 1)}
+              >
+                Count is {count}
+              </Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="utility">Utility</Button>
+              <Button variant="icon" aria-label="Icon button">
+                +
+              </Button>
+            </div>
+          </Card>
+
+          <Card elevated>
+            <h3 className="mb-md text-heading-3">Elevated card</h3>
+            <p className="mb-lg text-body-sm text-ink-muted">
+              Soft layered shadow (Level 1) instead of a hairline border.
+            </p>
+            <label className="mb-xxs block text-eyebrow text-ink-muted">
+              Text input
+            </label>
+            <Input
+              placeholder="Your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {name ? (
+              <p className="mt-sm text-caption text-ink-secondary">
+                Hello, {name}
+              </p>
+            ) : null}
+          </Card>
+        </div>
+
+        <Card>
+          <h3 className="mb-sm text-title">Sticker palette (decorative)</h3>
+          <p className="mb-md text-body-sm text-ink-muted">
+            Accents for illustrations and category dots — never CTAs.
+          </p>
+          <div className="flex flex-wrap gap-xs">
+            {[
+              'bg-accent-sky',
+              'bg-accent-purple',
+              'bg-accent-pink',
+              'bg-accent-orange',
+              'bg-accent-teal',
+              'bg-accent-green',
+              'bg-accent-brown',
+            ].map((swatch) => (
+              <span
+                key={swatch}
+                className={`size-8 rounded-full ${swatch}`}
+                title={swatch}
+              />
+            ))}
+          </div>
+        </Card>
+      </main>
+
+      <Footer className="border-t border-hairline">
+        <div className="mx-auto flex max-w-[1080px] flex-wrap items-center justify-between gap-md">
+          <span>Design system scaffold · tokens from DESIGN.md</span>
+          <span className="text-ink-faint">canvas-soft · primary · Inter</span>
+        </div>
+      </Footer>
     </div>
   )
 }

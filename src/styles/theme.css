@@ -1,0 +1,75 @@
+/*
+  Design tokens from DESIGN.md (Notion Analysis).
+  Mapped 1:1 into Tailwind v4 @theme — use as bg-primary, text-ink, rounded-lg, shadow-soft, etc.
+
+  Do:
+  - Reserve primary for CTAs, links, and focus/active signals only
+  - Keep pages on canvas-soft; use surface (white) for cards and fields
+  - Sticker accents (accent-*) are decorative only — never CTAs or structural fills
+  - Pill (rounded-full) for marketing CTAs; rounded-xs for inputs
+
+  Don't:
+  - Paint CTAs with sticker-palette colors
+  - Add a second structural accent beside primary
+  - Use heavy drop-shadows — prefer hairline + shadow-soft / shadow-elevated
+*/
+
+@theme {
+  /* Colors */
+  --color-primary: #0075de;
+  --color-primary-active: #005bab;
+  --color-secondary: #213183;
+  --color-on-primary: #ffffff;
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #f6f5f4;
+  --color-surface: #ffffff;
+  --color-ink: #000000;
+  --color-ink-secondary: #31302e;
+  --color-ink-muted: #615d59;
+  --color-ink-faint: #a39e98;
+  --color-hairline: #e6e6e6;
+  --color-accent-sky: #62aef0;
+  --color-accent-purple: #d6b6f6;
+  --color-accent-purple-deep: #391c57;
+  --color-accent-pink: #ff64c8;
+  --color-accent-orange: #dd5b00;
+  --color-accent-orange-deep: #793400;
+  --color-accent-teal: #2a9d99;
+  --color-accent-green: #1aae39;
+  --color-accent-brown: #523410;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Spacing (extends Tailwind scale with named steps) */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 28px;
+  --spacing-xxl: 32px;
+
+  /* Font */
+  --font-sans: Inter, -apple-system, system-ui, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+
+  /* Elevation — Level 1 soft / Level 2 elevated (DESIGN.md) */
+  --shadow-soft:
+    rgba(0, 0, 0, 0.01) 0 0.175px 1.041px,
+    rgba(0, 0, 0, 0.02) 0 0.8px 2.925px,
+    rgba(0, 0, 0, 0.027) 0 2.025px 7.847px,
+    rgba(0, 0, 0, 0.04) 0 4px 18px;
+
+  --shadow-elevated:
+    rgba(0, 0, 0, 0.01) 0 0.175px 1.041px,
+    rgba(0, 0, 0, 0.02) 0 0.8px 2.925px,
+    rgba(0, 0, 0, 0.027) 0 2.025px 7.847px,
+    rgba(0, 0, 0, 0.04) 0 4px 18px,
+    rgba(0, 0, 0, 0.05) 0 23px 52px;
+}
