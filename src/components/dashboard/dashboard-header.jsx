@@ -1,6 +1,7 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Search } from 'lucide-react'
 import { getNavLabel } from '@/components/dashboard/nav-config'
+import { signOut, useSession } from '@/lib/auth-client'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   Breadcrumb,
@@ -22,9 +23,28 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 
+function initialsFromUser(user) {
+  const source = user?.name || user?.email || '?'
+  return source
+    .split(/\s+|@/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('')
+}
+
 export function DashboardHeader() {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const { data: session } = useSession()
   const pageLabel = getNavLabel(pathname)
+  const user = session?.user
+  const initials = initialsFromUser(user)
+
+  async function handleSignOut() {
+    await signOut()
+    navigate('/login', { replace: true })
+  }
 
   return (
     <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
@@ -62,18 +82,33 @@ export function DashboardHeader() {
               aria-label="Account menu"
             >
               <Avatar size="sm">
-                <AvatarFallback>AJ</AvatarFallback>
+                <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>My account</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm font-medium">
+                  {user?.name || 'My account'}
+                </span>
+                {user?.email ? (
+                  <span className="truncate text-xs text-muted-foreground">
+                    {user.email}
+                  </span>
+                ) : null}
+              </div>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link to="/dashboard/settings">Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/">Back to home</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleSignOut}>
+              Sign out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
