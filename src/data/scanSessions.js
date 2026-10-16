@@ -1,0 +1,516 @@
+/** Deterministic mock data for the QIC Scan Data Portal */
+
+export const users = [
+  'John Smith',
+  'Sarah Johnson',
+  'Michael Davis',
+  'Emily Wilson',
+  'David Brown',
+  'Jessica Martinez',
+]
+
+export const locations = [
+  '004 - Mansfield',
+  '014 - Amityville',
+  '015 - Louisville',
+  '023 - Bethlehem',
+  '029 - Newburgh',
+  '010 - Columbus FDC',
+  '016 - Whitestown',
+  '019 - Chicago',
+  '049 - Williamston',
+  '087 - Columbus NDC',
+  '017 - Salt Lake City',
+  '018 - Dallas',
+  '021 - Kansas City',
+  '028 - Shakopee',
+  '037 - Houston',
+  '038 - Denver',
+  '008 - Sacramento',
+  '012 - Corona',
+  '022 - Phoenix-B',
+  '026 - Honolulu',
+  '030 - Seattle',
+  '003 - Puerto Rico',
+  '027 - Olive Branch',
+  '039 - Buford',
+  '041 - Richmond',
+  '055 - Raleigh',
+  '063 - Orlando Vista',
+  'NDCII – Cincinnati',
+  '200 – Brooks',
+  '220 – Dothan',
+  '230 – MontClair',
+]
+
+export const scanTypes = ['Capture', 'Overage', 'Damage']
+
+export const suppliers = [
+  'Supplier A',
+  'Supplier B',
+  'Supplier C',
+  'Supplier D',
+  'Supplier E',
+  'Supplier F',
+]
+
+export const statusOptions = [
+  'New',
+  'Vendor Responded & Reviewing',
+  'MODs Investigating',
+  'Awaiting DC Response',
+  'Awaiting Buyer Response',
+]
+
+export const resolvedOptions = [
+  { value: 'Okept', label: 'Overage Kept' },
+  { value: 'Oreturn', label: 'Overage Returned' },
+  { value: 'Dreturn', label: 'Damage Returned' },
+  { value: 'SCredited', label: 'Supplier Credited' },
+  { value: 'SDenied', label: 'Supplier Denied' },
+]
+
+function generateGTIN(seed) {
+  const base = '003003' + String(seed).padStart(7, '0')
+  return base + String(seed % 10)
+}
+
+function generateSerial(seed) {
+  return '05' + String(seed).padStart(12, '0')
+}
+
+function generateLot(seed) {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const digits = '0123456789'
+  return (
+    letters[seed % 26] +
+    letters[(seed * 3) % 26] +
+    digits[seed % 10] +
+    letters[(seed * 7) % 26]
+  )
+}
+
+/** Fixed YYMMDD expiries so fixtures stay stable across reloads */
+function generateExpiryDate(monthsAhead) {
+  const date = new Date(Date.UTC(2026, 0, 15))
+  date.setUTCMonth(date.getUTCMonth() + monthsAhead)
+  const year = date.getUTCFullYear().toString().slice(-2)
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(date.getUTCDate()).padStart(2, '0')
+  return `${year}${month}${day}`
+}
+
+const sharedImages = {
+  original: '/images/original.jpg',
+  annotated: '/images/annotated.jpg',
+  captured: [
+    '/images/capture1.jpg',
+    '/images/capture2.jpg',
+    '/images/capture3.jpg',
+    '/images/capture4.jpg',
+  ],
+}
+
+export const scanSessions = [
+  {
+    id: 'SES-2026-001',
+    sessionId: 'SESSION-20260131-0815-A001',
+    location: locations[0],
+    user: users[0],
+    scanType: 'Capture',
+    poNo: 'PO-456789',
+    isCD: true,
+    recordedDate: new Date('2026-01-31T08:15:23Z'),
+    noOfCodes: 24,
+    supplierName: 'Supplier A',
+    status: 'Vendor Responded & Reviewing',
+    followUp1: new Date('2026-02-03'),
+    followUp2: new Date('2026-02-10'),
+    followUp3: null,
+    resolved: 'Okept',
+    items: [
+      {
+        gtin: generateGTIN(101),
+        serial: generateSerial(10001),
+        lot: generateLot(1),
+        expiry: generateExpiryDate(18),
+        qty: 12,
+      },
+      {
+        gtin: generateGTIN(102),
+        serial: generateSerial(10002),
+        lot: generateLot(2),
+        expiry: generateExpiryDate(24),
+        qty: 12,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-002',
+    sessionId: 'SESSION-20260131-0923-B015',
+    location: locations[1],
+    user: users[1],
+    scanType: 'Overage',
+    poNo: 'PO-456790',
+    isCD: false,
+    recordedDate: new Date('2026-01-31T09:23:45Z'),
+    noOfCodes: 1,
+    supplierName: 'Supplier B',
+    status: 'MODs Investigating',
+    followUp1: new Date('2026-02-05'),
+    followUp2: null,
+    followUp3: null,
+    resolved: 'Oreturn',
+    items: [
+      {
+        gtin: generateGTIN(201),
+        serial: generateSerial(20001),
+        lot: generateLot(3),
+        expiry: generateExpiryDate(12),
+        qty: 1,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-003',
+    sessionId: 'SESSION-20260131-1045-C022',
+    location: locations[2],
+    user: users[2],
+    scanType: 'Damage',
+    poNo: 'PO-456791',
+    isCD: true,
+    recordedDate: new Date('2026-01-31T10:45:12Z'),
+    noOfCodes: 8,
+    supplierName: 'Supplier C',
+    status: 'Awaiting DC Response',
+    followUp1: new Date('2026-02-01'),
+    followUp2: new Date('2026-02-08'),
+    followUp3: new Date('2026-02-15'),
+    resolved: 'Dreturn',
+    items: [
+      {
+        gtin: generateGTIN(301),
+        serial: generateSerial(30001),
+        lot: generateLot(4),
+        expiry: generateExpiryDate(15),
+        qty: 2,
+      },
+      {
+        gtin: generateGTIN(302),
+        serial: generateSerial(30002),
+        lot: generateLot(5),
+        expiry: generateExpiryDate(20),
+        qty: 3,
+      },
+      {
+        gtin: generateGTIN(303),
+        serial: generateSerial(30003),
+        lot: generateLot(6),
+        expiry: generateExpiryDate(22),
+        qty: 3,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-004',
+    sessionId: 'SESSION-20260131-1134-A008',
+    location: locations[0],
+    user: users[3],
+    scanType: 'Capture',
+    poNo: 'PO-456792',
+    isCD: false,
+    recordedDate: new Date('2026-01-31T11:34:28Z'),
+    noOfCodes: 30,
+    supplierName: 'Supplier D',
+    status: 'Awaiting Buyer Response',
+    followUp1: new Date('2026-02-02'),
+    followUp2: new Date('2026-02-09'),
+    followUp3: null,
+    resolved: 'SCredited',
+    items: [
+      {
+        gtin: generateGTIN(401),
+        serial: generateSerial(40001),
+        lot: generateLot(7),
+        expiry: generateExpiryDate(10),
+        qty: 10,
+      },
+      {
+        gtin: generateGTIN(402),
+        serial: generateSerial(40002),
+        lot: generateLot(8),
+        expiry: generateExpiryDate(14),
+        qty: 10,
+      },
+      {
+        gtin: generateGTIN(403),
+        serial: generateSerial(40003),
+        lot: generateLot(9),
+        expiry: generateExpiryDate(16),
+        qty: 10,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-005',
+    sessionId: 'SESSION-20260131-1315-D003',
+    location: locations[3],
+    user: users[4],
+    scanType: 'Overage',
+    poNo: 'PO-456793',
+    isCD: true,
+    recordedDate: new Date('2026-01-31T13:15:56Z'),
+    noOfCodes: 5,
+    supplierName: 'Supplier E',
+    status: 'New',
+    followUp1: null,
+    followUp2: null,
+    followUp3: null,
+    resolved: 'SDenied',
+    items: [
+      {
+        gtin: generateGTIN(501),
+        serial: generateSerial(50001),
+        lot: generateLot(10),
+        expiry: generateExpiryDate(25),
+        qty: 5,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-006',
+    sessionId: 'SESSION-20260131-1442-E012',
+    location: locations[4],
+    user: users[5],
+    scanType: 'Capture',
+    poNo: 'PO-456794',
+    isCD: false,
+    recordedDate: new Date('2026-01-31T14:42:18Z'),
+    noOfCodes: 15,
+    supplierName: 'Supplier F',
+    status: 'Vendor Responded & Reviewing',
+    followUp1: new Date('2026-02-04'),
+    followUp2: new Date('2026-02-11'),
+    followUp3: new Date('2026-02-18'),
+    resolved: 'Okept',
+    items: [
+      {
+        gtin: generateGTIN(601),
+        serial: generateSerial(60001),
+        lot: generateLot(11),
+        expiry: generateExpiryDate(19),
+        qty: 5,
+      },
+      {
+        gtin: generateGTIN(602),
+        serial: generateSerial(60002),
+        lot: generateLot(12),
+        expiry: generateExpiryDate(21),
+        qty: 5,
+      },
+      {
+        gtin: generateGTIN(603),
+        serial: generateSerial(60003),
+        lot: generateLot(13),
+        expiry: generateExpiryDate(23),
+        qty: 5,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-007',
+    sessionId: 'SESSION-20260130-1625-B008',
+    location: locations[1],
+    user: users[0],
+    scanType: 'Damage',
+    poNo: 'PO-456795',
+    isCD: true,
+    recordedDate: new Date('2026-01-30T16:25:34Z'),
+    noOfCodes: 3,
+    supplierName: 'Supplier A',
+    status: 'MODs Investigating',
+    followUp1: new Date('2026-02-01'),
+    followUp2: new Date('2026-02-07'),
+    followUp3: null,
+    resolved: 'Dreturn',
+    items: [
+      {
+        gtin: generateGTIN(701),
+        serial: generateSerial(70001),
+        lot: generateLot(14),
+        expiry: generateExpiryDate(11),
+        qty: 3,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-008',
+    sessionId: 'SESSION-20260130-1508-C015',
+    location: locations[2],
+    user: users[1],
+    scanType: 'Capture',
+    poNo: 'PO-456796',
+    isCD: false,
+    recordedDate: new Date('2026-01-30T15:08:42Z'),
+    noOfCodes: 20,
+    supplierName: 'Supplier B',
+    status: 'Awaiting DC Response',
+    followUp1: new Date('2026-02-03'),
+    followUp2: null,
+    followUp3: null,
+    resolved: 'Oreturn',
+    items: [
+      {
+        gtin: generateGTIN(801),
+        serial: generateSerial(80001),
+        lot: generateLot(15),
+        expiry: generateExpiryDate(13),
+        qty: 10,
+      },
+      {
+        gtin: generateGTIN(802),
+        serial: generateSerial(80002),
+        lot: generateLot(16),
+        expiry: generateExpiryDate(17),
+        qty: 10,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-009',
+    sessionId: 'SESSION-20260130-1142-A015',
+    location: locations[0],
+    user: users[2],
+    scanType: 'Overage',
+    poNo: 'PO-456797',
+    isCD: true,
+    recordedDate: new Date('2026-01-30T11:42:15Z'),
+    noOfCodes: 12,
+    supplierName: 'Supplier C',
+    status: 'Awaiting Buyer Response',
+    followUp1: new Date('2026-02-02'),
+    followUp2: new Date('2026-02-09'),
+    followUp3: new Date('2026-02-16'),
+    resolved: 'SCredited',
+    items: [
+      {
+        gtin: generateGTIN(901),
+        serial: generateSerial(90001),
+        lot: generateLot(17),
+        expiry: generateExpiryDate(28),
+        qty: 6,
+      },
+      {
+        gtin: generateGTIN(902),
+        serial: generateSerial(90002),
+        lot: generateLot(18),
+        expiry: generateExpiryDate(29),
+        qty: 6,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-010',
+    sessionId: 'SESSION-20260130-0932-D007',
+    location: locations[3],
+    user: users[3],
+    scanType: 'Capture',
+    poNo: 'PO-456798',
+    isCD: false,
+    recordedDate: new Date('2026-01-30T09:32:56Z'),
+    noOfCodes: 1,
+    supplierName: 'Supplier D',
+    status: 'New',
+    followUp1: null,
+    followUp2: null,
+    followUp3: null,
+    resolved: 'SDenied',
+    items: [
+      {
+        gtin: generateGTIN(1001),
+        serial: generateSerial(100001),
+        lot: generateLot(19),
+        expiry: generateExpiryDate(30),
+        qty: 1,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-011',
+    sessionId: 'SESSION-20260129-1655-E018',
+    location: locations[4],
+    user: users[4],
+    scanType: 'Damage',
+    poNo: 'PO-456799',
+    isCD: true,
+    recordedDate: new Date('2026-01-29T16:55:23Z'),
+    noOfCodes: 7,
+    supplierName: 'Supplier E',
+    status: 'Vendor Responded & Reviewing',
+    followUp1: new Date('2026-01-30'),
+    followUp2: new Date('2026-02-06'),
+    followUp3: null,
+    resolved: 'Dreturn',
+    items: [
+      {
+        gtin: generateGTIN(1101),
+        serial: generateSerial(110001),
+        lot: generateLot(20),
+        expiry: generateExpiryDate(8),
+        qty: 7,
+      },
+    ],
+    images: sharedImages,
+  },
+  {
+    id: 'SES-2026-012',
+    sessionId: 'SESSION-20260129-1420-B022',
+    location: locations[1],
+    user: users[5],
+    scanType: 'Capture',
+    poNo: 'PO-456800',
+    isCD: false,
+    recordedDate: new Date('2026-01-29T14:20:45Z'),
+    noOfCodes: 18,
+    supplierName: 'Supplier F',
+    status: 'MODs Investigating',
+    followUp1: new Date('2026-01-31'),
+    followUp2: new Date('2026-02-07'),
+    followUp3: new Date('2026-02-14'),
+    resolved: 'Okept',
+    items: [
+      {
+        gtin: generateGTIN(1201),
+        serial: generateSerial(120001),
+        lot: generateLot(21),
+        expiry: generateExpiryDate(27),
+        qty: 6,
+      },
+      {
+        gtin: generateGTIN(1202),
+        serial: generateSerial(120002),
+        lot: generateLot(22),
+        expiry: generateExpiryDate(31),
+        qty: 6,
+      },
+      {
+        gtin: generateGTIN(1203),
+        serial: generateSerial(120003),
+        lot: generateLot(23),
+        expiry: generateExpiryDate(32),
+        qty: 6,
+      },
+    ],
+    images: sharedImages,
+  },
+]

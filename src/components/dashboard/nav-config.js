@@ -1,10 +1,4 @@
-import {
-  LayoutDashboard,
-  ShoppingCart,
-  Users,
-  BarChart3,
-  Settings,
-} from 'lucide-react'
+import { LayoutDashboard, ScanLine, Settings } from 'lucide-react'
 
 export const navItems = [
   {
@@ -14,19 +8,9 @@ export const navItems = [
     end: true,
   },
   {
-    title: 'Orders',
-    href: '/dashboard/orders',
-    icon: ShoppingCart,
-  },
-  {
-    title: 'Customers',
-    href: '/dashboard/customers',
-    icon: Users,
-  },
-  {
-    title: 'Analytics',
-    href: '/dashboard/analytics',
-    icon: BarChart3,
+    title: 'Scan Sessions',
+    href: '/dashboard/sessions',
+    icon: ScanLine,
   },
   {
     title: 'Settings',

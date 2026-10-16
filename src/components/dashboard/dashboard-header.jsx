@@ -54,7 +54,7 @@ export function DashboardHeader() {
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
             <BreadcrumbLink asChild>
-              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/dashboard">QIC Portal</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="hidden md:block" />

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { GalleryVerticalEnd, LogOut } from 'lucide-react'
+import { LogOut, ScanLine } from 'lucide-react'
 import { navItems } from '@/components/dashboard/nav-config'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -42,12 +42,12 @@ export function AppSidebar(props) {
             <SidebarMenuButton size="lg" asChild>
               <Link to="/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
+                  <ScanLine className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Acme Inc</span>
+                  <span className="truncate font-medium">QIC Scan Portal</span>
                   <span className="truncate text-xs text-sidebar-foreground/70">
-                    Dashboard
+                    Scan Data Audit
                   </span>
                 </div>
               </Link>
@@ -58,7 +58,7 @@ export function AppSidebar(props) {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
+          <SidebarGroupLabel>Portal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (
