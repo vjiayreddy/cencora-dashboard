@@ -128,9 +128,22 @@ export default function AuditSessionsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [trackingData, setTrackingData] = useState(() => loadTrackingData())
+  const [detailWidth, setDetailWidth] = useState(0)
   const tableScrollRef = useRef(null)
 
   const activeFilterCount = Object.values(filters).filter(Boolean).length
+
+  useEffect(() => {
+    const el = tableScrollRef.current
+    if (!el) return
+
+    const updateWidth = () => setDetailWidth(el.clientWidth)
+    updateWidth()
+
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const filteredData = useMemo(() => {
     return scanSessions.filter((s) => {
@@ -632,6 +645,7 @@ export default function AuditSessionsPage() {
                     session={session}
                     tracking={tracking}
                     expanded={expanded}
+                    detailWidth={detailWidth}
                     visibleColumns={visibleColumns}
                     visibleCount={visibleCount}
                     onToggle={() => toggleRow(session.id)}
@@ -751,6 +765,7 @@ function SessionRows({
   session,
   tracking,
   expanded,
+  detailWidth,
   visibleColumns,
   visibleCount,
   onToggle,
@@ -842,12 +857,19 @@ function SessionRows({
       {expanded ? (
         <TableRow className="hover:bg-transparent">
           <TableCell colSpan={visibleCount + 1} className="p-0">
-            <SessionDetailPanel
-              session={session}
-              tracking={tracking}
-              onTrackingChange={onTrackingChange}
-              setTrackingData={setTrackingData}
-            />
+            <div
+              className="sticky left-0 max-w-full"
+              style={{
+                width: detailWidth > 0 ? detailWidth : '100%',
+              }}
+            >
+              <SessionDetailPanel
+                session={session}
+                tracking={tracking}
+                onTrackingChange={onTrackingChange}
+                setTrackingData={setTrackingData}
+              />
+            </div>
           </TableCell>
         </TableRow>
       ) : null}

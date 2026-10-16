@@ -8,6 +8,29 @@ export function formatSessionTime(date) {
   return format(date, 'h:mm a')
 }
 
+/** Format GS1 YYMMDD expiry strings for display (e.g. 270715 → Jul 15, 2027). */
+export function formatGtinExpiry(yymmdd) {
+  const raw = String(yymmdd ?? '').trim()
+  if (!/^\d{6}$/.test(raw)) return raw || '—'
+
+  const yy = Number(raw.slice(0, 2))
+  const mm = Number(raw.slice(2, 4))
+  const dd = Number(raw.slice(4, 6))
+  if (mm < 1 || mm > 12 || dd < 1 || dd > 31) return raw
+
+  const date = new Date(Date.UTC(2000 + yy, mm - 1, dd))
+  if (
+    Number.isNaN(date.getTime()) ||
+    date.getUTCFullYear() !== 2000 + yy ||
+    date.getUTCMonth() !== mm - 1 ||
+    date.getUTCDate() !== dd
+  ) {
+    return raw
+  }
+
+  return format(date, 'MMM d, yyyy')
+}
+
 export function scanTypeBadgeClass(type) {
   switch (type) {
     case 'Capture':

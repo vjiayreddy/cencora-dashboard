@@ -1,20 +1,13 @@
 import { Download, Mail, FileDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { resolvedOptions, statusOptions } from '@/data/scanSessions'
+import { ScannedItemsList } from '@/components/qic/ScannedItemsList'
 import { openSessionEmail } from '@/lib/qic-email'
 import { downloadImageFile, downloadVnfFile } from '@/lib/qic-export'
 import { saveSessionTracking } from '@/lib/qic-storage'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 
 export function SessionDetailPanel({
   session,
@@ -136,41 +129,18 @@ export function SessionDetailPanel({
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-lg border bg-background">
-          <div className="border-b px-4 py-3 text-sm font-medium">
-            Scanned Items ({session.noOfCodes} codes)
-          </div>
-          <div className="max-h-[420px] overflow-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>GTIN</TableHead>
-                  <TableHead>Serial</TableHead>
-                  <TableHead>Lot</TableHead>
-                  <TableHead>Expiry</TableHead>
-                  <TableHead className="text-right">Qty</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {session.items.map((item) => (
-                  <TableRow key={`${item.gtin}-${item.serial}`}>
-                    <TableCell className="font-mono text-xs">{item.gtin}</TableCell>
-                    <TableCell className="font-mono text-xs">{item.serial}</TableCell>
-                    <TableCell>{item.lot}</TableCell>
-                    <TableCell>{item.expiry}</TableCell>
-                    <TableCell className="text-right">{item.qty}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="min-w-0 lg:col-span-2">
+          <ScannedItemsList
+            items={session.items}
+            noOfCodes={session.noOfCodes}
+          />
         </div>
 
-        <div className="space-y-4 rounded-lg border bg-background p-4">
+        <div className="min-w-0 space-y-4 rounded-lg border bg-background p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-sm font-medium">Session Images</h3>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button type="button" variant="outline" size="sm" onClick={handleVnf}>
                 <FileDown data-icon="inline-start" />
                 Download VNF
@@ -212,7 +182,7 @@ export function SessionDetailPanel({
 
           <div>
             <p className="mb-2 text-xs text-muted-foreground">Captured Images</p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2">
               {session.images.captured.map((url, idx) => (
                 <div key={url} className="group relative">
                   <button
