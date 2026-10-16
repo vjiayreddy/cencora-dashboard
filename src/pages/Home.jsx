@@ -32,6 +32,9 @@ export default function Home() {
             Components
           </a>
           <Button variant="outline" size="sm" asChild>
+            <Link to="/login">Sign in</Link>
+          </Button>
+          <Button variant="outline" size="sm" asChild>
             <Link to="/dashboard">Dashboard</Link>
           </Button>
         </nav>
