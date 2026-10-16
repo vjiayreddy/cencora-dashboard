@@ -1,50 +1,52 @@
-# UI design system
+# shadcn/ui + DESIGN.md
 
-Tokens and primitives mapped from root `DESIGN.md` (Notion Analysis).
+Full shadcn registry (`radix-nova`, JSX) themed with Notion Analysis tokens from `DESIGN.md`.
 
-## Token → class map
+## Setup
 
-| Group | Token examples | Tailwind classes |
+- Config: [`components.json`](../../../components.json)
+- Theme: [`src/index.css`](../../index.css) (`:root` semantic vars + `@theme inline`)
+- Brand extras: [`src/styles/theme.css`](../../styles/theme.css) (night band, stickers, spacing, shadows)
+- Typography: [`src/styles/typography.css`](../../styles/typography.css)
+- Utils: `import { cn } from "@/lib/utils"` (re-exports `cn` package)
+
+## Token map (DESIGN.md → shadcn)
+
+| DESIGN.md | shadcn CSS var | Utility |
 | --- | --- | --- |
-| Colors | `primary`, `ink`, `canvas-soft`, `hairline` | `bg-primary`, `text-ink`, `bg-canvas-soft`, `border-hairline` |
-| Radii | `xs`–`full` | `rounded-xs`, `rounded-lg`, `rounded-full` |
-| Spacing | `xxs`–`xxl` | `p-lg`, `gap-sm`, `px-md` |
-| Shadows | soft / elevated | `shadow-soft`, `shadow-elevated` |
-| Type | display → eyebrow | `text-display-1`, `text-heading-1`, `text-body-md`, `text-eyebrow` |
+| `canvas-soft` | `--background` | `bg-background` |
+| `ink` | `--foreground` | `text-foreground` |
+| `surface` | `--card` / `--popover` | `bg-card` |
+| `primary` | `--primary` | `bg-primary` |
+| `on-primary` | `--primary-foreground` | `text-primary-foreground` |
+| soft support | `--secondary` / `--muted` / `--accent` | `bg-secondary`, `bg-muted` |
+| `ink-muted` | `--muted-foreground` | `text-muted-foreground` |
+| `hairline` | `--border` / `--input` | `border-border` |
+| `primary` | `--ring` | `ring-ring` |
+| `rounded.lg` (12px) | `--radius` | `rounded-lg` |
 
-Theme lives in [`src/styles/theme.css`](../../styles/theme.css). Typography utilities live in [`src/styles/typography.css`](../../styles/typography.css).
+Brand-only (not shadcn semantics):
 
-## Components
+- `bg-night` — indigo hero (`DESIGN.md` secondary)
+- `accent-sky` … `accent-brown` — sticker palette only
+- `text-display-1` … `text-eyebrow` — type scale
+
+## Usage
 
 ```js
-import { Badge, Button, Card, Footer, HeroBand, Input, NavBar } from './components/ui'
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { NavBar, HeroBand, Footer } from '@/components/brand'
 ```
 
-| Component | DESIGN.md | Notes |
-| --- | --- | --- |
-| `Button` | `button-primary` / `secondary` / `utility` / `icon` | `variant` prop; primary uses `active:bg-primary-active` |
-| `Badge` | `badge-pill` | Primary text on surface |
-| `Card` | `feature-card` | `elevated` → soft shadow |
-| `Input` | `text-input` | `rounded-xs`, focus soft shadow |
-| `NavBar` | `nav-bar` | Sticky white bar shell |
-| `HeroBand` | `hero-band` | Full-bleed secondary night band |
-| `Footer` | `footer` | canvas-soft band |
+Add more later:
 
-Use `cn()` from `src/lib/cn.js` when composing classes.
+```bash
+npx shadcn@latest add <component>
+```
 
-## Do / Don’t (from DESIGN.md)
+## Do / Don’t
 
-**Do**
+**Do:** reserve `primary` for CTAs/links; keep pages on `background` (`canvas-soft`); stickers decorative only.
 
-- Reserve `primary` for the primary action, links, and focus/active signals
-- Keep pages on `canvas-soft`; use `surface` for cards and fields
-- Keep sticker accents (`accent-*`) in illustrations, icon tiles, and category dots
-- Use `rounded-full` for marketing CTAs and `rounded-md` for utility buttons
-- Prefer hairline + `shadow-soft` over heavy drop-shadows
-
-**Don’t**
-
-- Paint a CTA with a sticker-palette color
-- Introduce a second structural accent beside `primary`
-- Put pill radii on form fields — inputs stay at `rounded-xs`
-- Set body copy in weight 700 — keep 400 for body, 700 for headlines
+**Don’t:** paint CTAs with sticker colors; use `bg-secondary` for the night hero — use `bg-night` instead.
