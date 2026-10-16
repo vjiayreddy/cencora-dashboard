@@ -5,9 +5,9 @@
 */
 
 @theme {
-  /* Night hero band (DESIGN secondary indigo — not shadcn --secondary) */
-  --color-night: #213183;
-  --color-primary-active: #005bab;
+  /* Night hero band (Q Scan navy — not shadcn --secondary) */
+  --color-night: #1b3f8b;
+  --color-primary-active: #143066;
   --color-canvas: #ffffff;
   --color-canvas-soft: #f6f5f4;
   --color-surface: #ffffff;
@@ -19,13 +19,13 @@
   --color-on-primary: #ffffff;
 
   /* Sticker palette — decorative only, never CTAs */
-  --color-accent-sky: #62aef0;
+  --color-accent-sky: #33b8e0;
   --color-accent-purple: #d6b6f6;
   --color-accent-purple-deep: #391c57;
   --color-accent-pink: #ff64c8;
-  --color-accent-orange: #dd5b00;
-  --color-accent-orange-deep: #793400;
-  --color-accent-teal: #2a9d99;
+  --color-accent-orange: #f08a1a;
+  --color-accent-orange-deep: #a35a0a;
+  --color-accent-teal: #00a3d9;
   --color-accent-green: #1aae39;
   --color-accent-brown: #523410;
 
