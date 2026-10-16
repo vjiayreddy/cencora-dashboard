@@ -59,17 +59,19 @@ export function SessionDetailPanel({
 
   return (
     <div
-      className="space-y-4 border-t bg-muted/30 p-4"
+      className="space-y-2 border-t border-primary/15 bg-secondary/40 px-3 py-2"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="grid gap-3 rounded-lg border bg-background p-4 sm:grid-cols-2 lg:grid-cols-6">
-        <div className="space-y-1.5">
-          <Label htmlFor={`status-${session.id}`}>Status</Label>
+      <div className="grid gap-2 rounded-md border border-primary/20 bg-card px-3 py-2 sm:grid-cols-2 lg:grid-cols-6">
+        <div className="space-y-1">
+          <Label htmlFor={`status-${session.id}`} className="text-primary">
+            Status
+          </Label>
           <select
             id={`status-${session.id}`}
             value={t.status}
             onChange={(e) => updateField('status', e.target.value)}
-            className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm"
+            className="flex h-8 w-full rounded-md border border-primary/20 bg-background px-2.5 text-sm"
           >
             {statusOptions.map((opt) => (
               <option key={opt} value={opt}>
@@ -78,8 +80,10 @@ export function SessionDetailPanel({
             ))}
           </select>
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`fu1-${session.id}`}>1st Follow Up</Label>
+        <div className="space-y-1">
+          <Label htmlFor={`fu1-${session.id}`} className="text-primary">
+            1st Follow Up
+          </Label>
           <Input
             id={`fu1-${session.id}`}
             type="date"
@@ -87,8 +91,10 @@ export function SessionDetailPanel({
             onChange={(e) => updateField('followUp1', e.target.value)}
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`fu2-${session.id}`}>2nd Follow Up</Label>
+        <div className="space-y-1">
+          <Label htmlFor={`fu2-${session.id}`} className="text-primary">
+            2nd Follow Up
+          </Label>
           <Input
             id={`fu2-${session.id}`}
             type="date"
@@ -97,8 +103,10 @@ export function SessionDetailPanel({
             onChange={(e) => updateField('followUp2', e.target.value)}
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`fu3-${session.id}`}>3rd Follow Up</Label>
+        <div className="space-y-1">
+          <Label htmlFor={`fu3-${session.id}`} className="text-primary">
+            3rd Follow Up
+          </Label>
           <Input
             id={`fu3-${session.id}`}
             type="date"
@@ -107,13 +115,15 @@ export function SessionDetailPanel({
             onChange={(e) => updateField('followUp3', e.target.value)}
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`resolved-${session.id}`}>Resolved</Label>
+        <div className="space-y-1">
+          <Label htmlFor={`resolved-${session.id}`} className="text-primary">
+            Resolved
+          </Label>
           <select
             id={`resolved-${session.id}`}
             value={t.resolved}
             onChange={(e) => updateField('resolved', e.target.value)}
-            className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm"
+            className="flex h-8 w-full rounded-md border border-primary/20 bg-background px-2.5 text-sm"
           >
             {resolvedOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -129,17 +139,10 @@ export function SessionDetailPanel({
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="min-w-0 lg:col-span-2">
-          <ScannedItemsList
-            items={session.items}
-            noOfCodes={session.noOfCodes}
-          />
-        </div>
-
-        <div className="min-w-0 space-y-4 rounded-lg border bg-background p-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="text-sm font-medium">Session Images</h3>
+      <div className="space-y-2">
+        <div className="rounded-md border border-accent-teal/30 bg-card">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-accent-teal/20 bg-secondary px-3 py-2">
+            <h3 className="text-sm font-semibold text-primary">Session Images</h3>
             <div className="flex flex-wrap gap-2">
               <Button type="button" variant="outline" size="sm" onClick={handleVnf}>
                 <FileDown data-icon="inline-start" />
@@ -152,65 +155,84 @@ export function SessionDetailPanel({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { url: session.images.original, label: 'Original', name: `${session.id}-original.jpg` },
-              { url: session.images.annotated, label: 'Annotated', name: `${session.id}-annotated.jpg` },
-            ].map((img) => (
-              <div key={img.label} className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{img.label}</span>
-                  <button
-                    type="button"
-                    className="rounded p-1 hover:bg-muted"
-                    onClick={(e) => handleImageDownload(e, img.url, img.name)}
-                    aria-label={`Download ${img.label}`}
-                  >
-                    <Download className="size-3.5" />
-                  </button>
-                </div>
-                <a href={img.url} target="_blank" rel="noreferrer">
-                  <img
-                    src={img.url}
-                    alt={img.label}
-                    className="aspect-square w-full rounded-md border object-cover"
-                  />
-                </a>
-              </div>
-            ))}
-          </div>
-
-          <div>
-            <p className="mb-2 text-xs text-muted-foreground">Captured Images</p>
-            <div className="grid grid-cols-2 gap-2">
-              {session.images.captured.map((url, idx) => (
-                <div key={url} className="group relative">
-                  <button
-                    type="button"
-                    className="absolute top-1 right-1 z-10 rounded bg-background/90 p-1 opacity-0 shadow group-hover:opacity-100"
-                    onClick={(e) =>
-                      handleImageDownload(
-                        e,
-                        url,
-                        `${session.id}-capture-${idx + 1}.jpg`,
-                      )
-                    }
-                    aria-label={`Download capture ${idx + 1}`}
-                  >
-                    <Download className="size-3.5" />
-                  </button>
-                  <a href={url} target="_blank" rel="noreferrer">
-                    <img
-                      src={url}
-                      alt={`Capture ${idx + 1}`}
-                      className="aspect-square w-full rounded-md border object-cover"
-                    />
-                  </a>
+          <div className="space-y-3 px-3 py-2">
+            <div className="flex flex-wrap gap-3">
+              {[
+                {
+                  url: session.images.original,
+                  label: 'Original',
+                  name: `${session.id}-original.jpg`,
+                },
+                {
+                  url: session.images.annotated,
+                  label: 'Annotated',
+                  name: `${session.id}-annotated.jpg`,
+                },
+              ].map((img) => (
+                <div key={img.label} className="w-[148px] space-y-1">
+                  <p className="text-xs font-semibold text-accent-teal">
+                    {img.label}
+                  </p>
+                  <div className="group relative">
+                    <button
+                      type="button"
+                      className="absolute top-1.5 right-1.5 z-10 rounded-md bg-primary p-1.5 text-primary-foreground shadow-sm opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                      onClick={(e) => handleImageDownload(e, img.url, img.name)}
+                      aria-label={`Download ${img.label}`}
+                    >
+                      <Download className="size-3.5" />
+                    </button>
+                    <a href={img.url} target="_blank" rel="noreferrer">
+                      <img
+                        src={img.url}
+                        alt={img.label}
+                        className="aspect-square w-full rounded-md border border-accent-teal/25 object-cover"
+                      />
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>
+
+            <div>
+              <p className="mb-1.5 text-xs font-semibold text-accent-orange">
+                Captured Images
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {session.images.captured.map((url, idx) => (
+                  <div key={url} className="group relative w-[112px]">
+                    <button
+                      type="button"
+                      className="absolute top-1.5 right-1.5 z-10 rounded-md bg-accent-orange p-1.5 text-white shadow-sm opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                      onClick={(e) =>
+                        handleImageDownload(
+                          e,
+                          url,
+                          `${session.id}-capture-${idx + 1}.jpg`,
+                        )
+                      }
+                      aria-label={`Download capture ${idx + 1}`}
+                    >
+                      <Download className="size-3.5" />
+                    </button>
+                    <a href={url} target="_blank" rel="noreferrer">
+                      <img
+                        src={url}
+                        alt={`Capture ${idx + 1}`}
+                        className="aspect-square w-full rounded-md border border-accent-orange/30 object-cover"
+                      />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
+
+        <ScannedItemsList
+          items={session.items}
+          noOfCodes={session.noOfCodes}
+        />
       </div>
     </div>
   )
